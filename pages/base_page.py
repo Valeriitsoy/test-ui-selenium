@@ -41,3 +41,9 @@ class BasePage:
         action = AC(self.driver)
         action.context_click(element)
         action.perform()
+
+    def switch_to_new_window_get_url(self):
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        return self.driver.current_url
+
+

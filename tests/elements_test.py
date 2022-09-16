@@ -1,6 +1,11 @@
 import random
 import time
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage
+
+from loguru import logger
+
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage
+
+logger.add("debug.log", format="{time} {level} {message}")
 
 
 class TestElements:
@@ -11,9 +16,6 @@ class TestElements:
             text_box_page.open()
             full_name, email, current_address, permanent_address = text_box_page.fill_all_fields()
             out_name, out_email, out_cur_addr, out_per_addr = text_box_page.check_filled_form()
-
-            # print(f'{out_name}\n{out_email}\n{out_cur_addr}\n{out_per_addr}')
-
             assert full_name == out_name, "no match"
             assert email == out_email
             assert current_address == out_cur_addr
@@ -113,4 +115,38 @@ class TestElements:
             web_page.open()
             click_result = web_page.simple_click()
             assert click_result == 'You have done a dynamic click', "The dynamic click button is not pressed"
+
+    class TestLInks:
+        def test_simple_link(self, driver):
+            links_page = LinksPage(driver, 'https://demoqa.com/links')
+            links_page.open()
+            href_link, current_link = links_page.check_simple_link()
+            logger.info(href_link)
+            assert href_link == current_link
+
+        def test_dynamic_link(self, driver):
+            links_page = LinksPage(driver, 'https://demoqa.com/links')
+            links_page.open()
+            href_link, current_link = links_page.check_dynamic_link()
+            logger.info(href_link)
+            assert href_link == current_link
+
+        def test_api_call_links(self, driver):
+            links_page = LinksPage(driver, 'https://demoqa.com/links')
+            links_page.open()
+            code_created, check_created = links_page.check_api_call_link('https://demoqa.com/created')
+            logger.info([code_created, check_created])
+            code_no_content, check_no_content = links_page.check_api_call_link('https://demoqa.com/no-content')
+            code_moved, check_moved = links_page.check_api_call_link('https://demoqa.com/moved')
+            code_bad_request, check_bad_request = links_page.check_api_call_link('https://demoqa.com/bad-request')
+            code_unauthorized, check_unauthorized = links_page.check_api_call_link('https://demoqa.com/unauthorized')
+            code_forbidden, check_forbidden = links_page.check_api_call_link('https://demoqa.com/forbidden')
+            code_invalid_url, check_invalid_url = links_page.check_api_call_link('https://demoqa.com/invalid-url')
+            assert code_created == check_created
+            assert code_no_content == check_no_content
+            assert code_moved == check_moved
+            assert code_bad_request == check_bad_request
+            assert code_unauthorized == check_unauthorized
+            assert code_forbidden == check_forbidden
+            assert code_invalid_url == check_invalid_url
 

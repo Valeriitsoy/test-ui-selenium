@@ -1,11 +1,15 @@
 import random
 import time
 
+import requests
+from loguru import logger
 from generator.generator import generated_person
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
-    WebTablePageLocators, ButtonsLocators
+    WebTablePageLocators, ButtonsLocators, LinksLocators
 from pages.base_page import BasePage
 from selenium.webdriver.common.by import By
+
+logger.add("debug.log", format="{time} {level} {message}")
 
 
 class TextBoxPage(BasePage):
@@ -174,5 +178,52 @@ class ButtonsPage(BasePage):
     def simple_click(self):
         self.element_is_visible(self.locators.CLICK_ME).click()
         return self.check_click_buttons(self.locators.CHECK_CLICK_ME)
+
+
+class LinksPage(BasePage):
+    locators = LinksLocators()
+
+    def check_simple_link(self):
+        simple_link = self.element_is_visible(self.locators.SIMPLE_LINk)
+        href_link = simple_link.get_attribute('href')
+        request = requests.get(href_link)
+        if request.status_code == 200:
+            simple_link.click()
+            url = self.switch_to_new_window_get_url()
+            return href_link, url
+        else:
+            return href_link, request.status_code
+
+    def check_dynamic_link(self):
+        dynamic_link = self.element_is_visible(self.locators.DYNAMIC_LINK)
+        href_link = dynamic_link.get_attribute('href')
+        request = requests.get(href_link)
+        if request.status_code == 200:
+            dynamic_link.click()
+            url = self.switch_to_new_window_get_url()
+            return href_link, url
+        else:
+            return href_link, request.status_code
+
+    def check_api_call_link(self, url):
+        r = requests.get(url)
+        dict_codes = {
+            201: self.locators.CREATED_LINK,
+            204: self.locators.NO_CONTENT_LINK,
+            301: self.locators.MOVED_LINK,
+            400: self.locators.BAD_REQUEST_LINK,
+            401: self.locators.UNAUTHORIZED_LINK,
+            403: self.locators.FORBIDDEN_LINK,
+            404: self.locators.NOT_FOUND_LINK
+        }
+        if r.status_code in dict_codes:
+            locator_ = dict_codes.get(r.status_code)
+            self.element_is_visible(locator_).click()
+            time.sleep(1)
+            link_response_text = self.element_is_visible((By.XPATH, "//*[@id='linkResponse']/b[1]")).text
+            return r.status_code, int(link_response_text)
+        else:
+            return r.status_code, url
+
 
 

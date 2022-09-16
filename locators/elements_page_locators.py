@@ -65,3 +65,14 @@ class ButtonsLocators:
     CLICK_ME = (By.XPATH, "//div[3]/button")    # динамический ID
     CHECK_CLICK_ME = (By.CSS_SELECTOR, "p[id='dynamicClickMessage']")
 
+
+class LinksLocators:
+    SIMPLE_LINk = (By.CSS_SELECTOR, "a[id='simpleLink']")
+    DYNAMIC_LINK = (By.CSS_SELECTOR, "a[id='dynamicLink']")
+    CREATED_LINK = (By.CSS_SELECTOR, "a[id='created']")
+    NO_CONTENT_LINK = (By.CSS_SELECTOR, "a[id='no-content']")
+    MOVED_LINK = (By.CSS_SELECTOR, "a[id='moved']")
+    BAD_REQUEST_LINK = (By.CSS_SELECTOR, "a[id='bad-request']")
+    UNAUTHORIZED_LINK = (By.CSS_SELECTOR, "a[id='unauthorized']")
+    FORBIDDEN_LINK = (By.CSS_SELECTOR, "a[id='forbidden']")
+    NOT_FOUND_LINK = (By.CSS_SELECTOR, "a[id='invalid-url']")
