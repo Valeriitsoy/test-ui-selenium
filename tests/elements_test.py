@@ -4,7 +4,7 @@ import time
 from loguru import logger
 
 from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
-    UploadDownloadFilePage
+    UploadDownloadFilePage, DynamicProperties
 
 logger.add("debug.log", format="{time} {level} {message}")
 
@@ -164,3 +164,30 @@ class TestElements:
             download_.open()
             result = download_.download_file()
             assert result is True, "The file not download"
+
+    class TestDynamicProperties:
+
+        def test_enable_button(self, driver):
+            enable_button = DynamicProperties(driver, 'https://demoqa.com/dynamic-properties')
+            enable_button.open()
+            enable_ = enable_button.check_enable_button()
+            assert enable_ is True, "the button is invisible after 5 seconds"
+
+        def test_change_color_button(self, driver):
+            change_color_button = DynamicProperties(driver, 'https://demoqa.com/dynamic-properties')
+            change_color_button.open()
+            before_, after_ = change_color_button.check_change_color_button()
+            assert before_ != after_, "the color not change"
+
+        def test_visible_button(self, driver):
+            visible_button = DynamicProperties(driver, 'https://demoqa.com/dynamic-properties')
+            visible_button.open()
+            visible_ = visible_button.check_visible_after_button()
+            assert visible_ is True, "the button is invisible after 5 seconds"
+
+
+
+
+
+
+
