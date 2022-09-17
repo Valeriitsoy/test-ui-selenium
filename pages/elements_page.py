@@ -1,11 +1,13 @@
+import base64
+import os
 import random
 import time
 
 import requests
 from loguru import logger
-from generator.generator import generated_person
+from generator.generator import generated_person, generated_file
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
-    WebTablePageLocators, ButtonsLocators, LinksLocators
+    WebTablePageLocators, ButtonsLocators, LinksLocators, UploadDownloadFilePageLocators
 from pages.base_page import BasePage
 from selenium.webdriver.common.by import By
 
@@ -226,4 +228,30 @@ class LinksPage(BasePage):
             return r.status_code, url
 
 
+class UploadDownloadFilePage(BasePage):
 
+    locators = UploadDownloadFilePageLocators()
+
+    def upload_file(self):
+        file_name, path = generated_file()
+        self.element_is_present(self.locators.UPLOAD_FILE).send_keys(path)
+        os.remove(path)
+        time.sleep(2)
+        check_text = self.element_is_present(self.locators.UPLOADED_RESULT).text
+        upload_name_file = file_name.split('\\')[-1]
+        uploaded_name_file = check_text.split('\\')[-1]
+        logger.info(upload_name_file)
+        logger.info(uploaded_name_file)
+        return upload_name_file, uploaded_name_file
+
+    def download_file(self):
+        link = self.element_is_present(self.locators.DOWNLOAD_FILE).get_attribute('href')
+        b_link = base64.b64decode(link)
+        logger.info(b_link)
+        path_file = rf'C:\MyPython\QA\filetest{random.randint(0, 99)}.jpeg'
+        with open(path_file, 'wb+') as f:
+            offset = b_link.find(b'\xff\xd8')
+            f.write(b_link[offset:])
+            check_file = os.path.exists(path_file)
+        os.remove(path_file)
+        return check_file

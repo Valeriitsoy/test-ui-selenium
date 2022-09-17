@@ -3,7 +3,8 @@ import time
 
 from loguru import logger
 
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
+    UploadDownloadFilePage
 
 logger.add("debug.log", format="{time} {level} {message}")
 
@@ -150,3 +151,16 @@ class TestElements:
             assert code_forbidden == check_forbidden
             assert code_invalid_url == check_invalid_url
 
+    class TestUploadDownloadFile:
+
+        def test_upload_file(self, driver):
+            upload_ = UploadDownloadFilePage(driver, 'https://demoqa.com/upload-download')
+            upload_.open()
+            upload_name, uploaded_name = upload_.upload_file()
+            assert upload_name == uploaded_name, "The file not upload"
+
+        def test_download_file(self, driver):
+            download_ = UploadDownloadFilePage(driver, 'https://demoqa.com/upload-download')
+            download_.open()
+            result = download_.download_file()
+            assert result is True, "The file not download"
