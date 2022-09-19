@@ -7,7 +7,16 @@ faker_ru = Faker('ru_Ru')
 Faker.seed()
 
 
+def get_value():
+    data_dict = {
+        1: "Hindi", 2: "English", 3: "Maths", 4: "Physics", 5: "Chemistry", 6: "Biology", 7: "Computer Science",
+        8: "Commerce", 9: "Accounting", 10: "Economics", 11: "Arts", 12: "Social Studies", 13: "History", 14: "Civics"
+    }
+    return data_dict.get(random.randint(1, 14))
+
+
 def generated_person():
+
     yield Person(
         full_name=faker_ru.first_name() + " " + faker_ru.last_name() + " " + faker_ru.middle_name(),
         firstname=faker_ru.first_name(),
@@ -18,6 +27,8 @@ def generated_person():
         email=faker_ru.email(),
         current_address=faker_ru.address(),
         permanent_address=faker_ru.address(),
+        mobile=faker_ru.msisdn(),
+        subject=get_value()
     )
 
 
