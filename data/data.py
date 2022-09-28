@@ -14,5 +14,3 @@ class Person:
     permanent_address: str = None
     mobile: str = None
     subject: str = None
-
-
