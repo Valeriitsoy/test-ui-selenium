@@ -3,9 +3,7 @@ import time
 
 from loguru import logger
 import pysnooper
-from selenium.common import UnexpectedAlertPresentException
-
-from locators.alert_win_locators import BrowserWindowsPageLocators, AlertsPageLocators
+from locators.alert_win_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators
 from pages.base_page import BasePage
 
 logger.add("debug.log", format="{time} {level} {message}")
@@ -76,5 +74,30 @@ class AlertsPage(BasePage):
         time.sleep(2)
         self.accept_alert()
         return text_, self.element_is_present(self.locators.PROMPT_RESULT_TEXT).text
+
+
+class FramesPage(BasePage):
+
+    locators = FramesPageLocators()
+
+    @pysnooper.snoop()
+    def check_frame(self, frame_number):
+        if frame_number == 'frame1':
+            frame = self.element_is_present(self.locators.FRAME_ONE)
+            width = frame.get_attribute('width')
+            height = frame.get_attribute('height')
+            self.driver.switch_to.frame(frame)
+            text = self.element_is_present(self.locators.TITLE_FRAME).text
+            self.driver.switch_to.default_content()
+            return [text, width, height]
+        if frame_number == 'frame2':
+            frame = self.element_is_present(self.locators.FRAME_TWO)
+            width = frame.get_attribute('width')
+            height = frame.get_attribute('height')
+            self.driver.switch_to.frame(frame)
+            text = self.element_is_present(self.locators.TITLE_FRAME).text
+            self.driver.switch_to.default_content()
+            return [text, width, height]
+
 
 
