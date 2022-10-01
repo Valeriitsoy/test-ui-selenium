@@ -1,3 +1,4 @@
+import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
@@ -51,3 +52,18 @@ class BasePage:
     def remove_footer(self):
         self.driver.execute_script("document.getElementsByTagName('footer')[0].remove();")
         self.driver.execute_script(" document.getElementById('close-fixedban').remove();")
+
+    def get_text_from_alert(self):
+        return self.driver.switch_to.alert.text
+
+    def accept_alert(self, timeout=5):
+        wait(self.driver, timeout).until(EC.alert_is_present())
+        return self.driver.switch_to.alert.accept()
+
+    def dismiss_alert(self, timeout=5):
+        wait(self.driver, timeout).until(EC.alert_is_present())
+        return self.driver.switch_to.alert.dismiss()
+
+    def prompt_alert(self, text, timeout=5):
+        wait(self.driver, timeout).until(EC.alert_is_present())
+        return self.driver.switch_to.alert.send_keys(text)

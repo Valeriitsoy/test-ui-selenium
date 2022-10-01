@@ -1,4 +1,6 @@
-from pages.alerts_win_page import BrowserWindowsPage
+import time
+
+from pages.alerts_win_page import BrowserWindowsPage, AlertsPage
 
 
 class TestAlertsWin:
@@ -10,3 +12,35 @@ class TestAlertsWin:
             new_tab.open()
             result_ = new_tab.check_opened_new('tab')
             assert result_ == 'This is a sample page'
+
+    class TestAlertsButtons:
+
+        def test_to_see_alert(self, driver):
+            alert_ = AlertsPage(driver, 'https://demoqa.com/alerts')
+            alert_.open()
+            alert_text = alert_.check_see_alert()
+            assert alert_text == 'You clicked a button'
+
+        def test_five_seconds_alert(self, driver):
+            alert_ = AlertsPage(driver, 'https://demoqa.com/alerts')
+            alert_.open()
+            alert_text = alert_.check_five_seconds_alert()
+            assert alert_text == 'This alert appeared after 5 seconds'
+
+        def test_confirm_box_alert(self, driver):
+            alert_ = AlertsPage(driver, 'https://demoqa.com/alerts')
+            alert_.open()
+            alert_text = alert_.check_confirm_alert()
+            assert alert_text == 'You selected Ok'
+
+        def test_dismiss_box_alert(self, driver):
+            alert_ = AlertsPage(driver, 'https://demoqa.com/alerts')
+            alert_.open()
+            alert_text = alert_.check_dismiss_alert()
+            assert alert_text == 'You selected Cancel'
+
+        def test_prompt_alert(self, driver):
+            alert_ = AlertsPage(driver, 'https://demoqa.com/alerts')
+            alert_.open()
+            text, alert_text = alert_.check_prompt_alert()
+            assert text in alert_text

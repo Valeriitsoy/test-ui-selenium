@@ -9,6 +9,6 @@ def driver():
     driver.maximize_window()
     # driver.set_window_size(750, 800)
     yield driver
-    driver.close()
+    # driver.close()
     driver.quit()
 
