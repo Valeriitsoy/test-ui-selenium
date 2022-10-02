@@ -4,6 +4,8 @@ from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains as AC
 
+from locators.alert_win_locators import NestedFramesPageLocators
+
 
 class BasePage:
     def __init__(self, driver, url):
@@ -67,3 +69,15 @@ class BasePage:
     def prompt_alert(self, text, timeout=5):
         wait(self.driver, timeout).until(EC.alert_is_present())
         return self.driver.switch_to.alert.send_keys(text)
+
+    def get_frame_text(self, name=''):
+        if name == 'parent':
+            parent_ = self.element_is_present((By.CSS_SELECTOR, "iframe[id='frame1']"))
+            self.driver.switch_to.frame(parent_)
+            text_ = self.element_is_present((By.CSS_SELECTOR, "body")).text
+            return text_
+        if name == 'child':
+            child_ = self.element_is_present((By.CSS_SELECTOR, "iframe[srcdoc='<p>Child Iframe</p>']"))
+            self.driver.switch_to.frame(child_)
+            text_ = self.element_is_present((By.CSS_SELECTOR, "p")).text
+            return text_

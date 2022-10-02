@@ -3,7 +3,8 @@ import time
 
 from loguru import logger
 import pysnooper
-from locators.alert_win_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators
+from locators.alert_win_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators, \
+    NestedFramesPageLocators
 from pages.base_page import BasePage
 
 logger.add("debug.log", format="{time} {level} {message}")
@@ -98,6 +99,17 @@ class FramesPage(BasePage):
             text = self.element_is_present(self.locators.TITLE_FRAME).text
             self.driver.switch_to.default_content()
             return [text, width, height]
+
+
+class NestedFramesPage(BasePage):
+
+    @pysnooper.snoop()
+    def check_nested_frame(self):
+
+        p_text = self.get_frame_text('parent')
+        c_text = self.get_frame_text('child')
+
+        return p_text, c_text
 
 
 
