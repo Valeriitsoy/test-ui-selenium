@@ -4,7 +4,7 @@ import time
 from loguru import logger
 import pysnooper
 from locators.alert_win_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators, \
-    NestedFramesPageLocators
+    NestedFramesPageLocators, ModalDialogsPageLocators
 from pages.base_page import BasePage
 
 logger.add("debug.log", format="{time} {level} {message}")
@@ -112,4 +112,16 @@ class NestedFramesPage(BasePage):
         return p_text, c_text
 
 
+class ModalDialogsPage(BasePage):
+
+    locators = ModalDialogsPageLocators()
+
+    @pysnooper.snoop()
+    def check_modal_dialog(self):
+        self.element_is_visible(self.locators.SMALL_MODAL_BUTTON).click()
+        title_small = self.element_is_visible(self.locators.TITLE_SMALL_MODAL).text
+        self.element_is_visible(self.locators.SMALL_CLOSE_BUTTON).click()
+        self.element_is_visible(self.locators.LARGE_MODAL_BUTTON).click()
+        title_large = self.element_is_visible(self.locators.TITLE_LARGE_MODAL).text
+        return title_small, title_large
 
