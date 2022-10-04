@@ -35,7 +35,7 @@ class FormPage(BasePage):
         return person
 
     def get_result_form(self):
-        result_ = self.element_are_present(self.locators.RESULT_TABLE)
+        result_ = self.elements_are_present(self.locators.RESULT_TABLE)
         data = []
         for i in result_:
             self.go_to_element(i)

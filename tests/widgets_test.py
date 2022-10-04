@@ -1,4 +1,8 @@
-from pages.widgets_pages import AccordionPage
+import time
+
+from loguru import logger
+
+from pages.widgets_pages import AccordionPage, AutoCompletePage
 
 
 class TestWidgets:
@@ -14,5 +18,38 @@ class TestWidgets:
             assert title_1 == "What is Lorem Ipsum?" and len(content_1) > 0
             assert title_2 == "Where does it come from?" and len(content_2) > 0
             assert title_3 == "Why do we use it?" and len(content_3) > 0
+
+    class TestAutoCompletePage:
+
+        def test_fil_multi_autocomplete(self, driver):
+            autocomplete_ = AutoCompletePage(driver, 'https://demoqa.com/auto-complete')
+            autocomplete_.open()
+            colors = autocomplete_.fill_input_multi()
+            colors_result = autocomplete_.check_color()
+            logger.info([colors, colors_result])
+            assert colors == colors_result
+
+        def test_remove_value_multi(self, driver):
+            autocomplete_ = AutoCompletePage(driver, 'https://demoqa.com/auto-complete')
+            autocomplete_.open()
+            autocomplete_.fill_input_multi()
+            count_before, count_after = autocomplete_.remove_value_multi()
+            logger.info([count_before, count_after])
+            assert count_before > count_after
+
+        def test_remove_all_value_multi(self, driver):
+            autocomplete_ = AutoCompletePage(driver, 'https://demoqa.com/auto-complete')
+            autocomplete_.open()
+            autocomplete_.fill_input_multi()
+            count_after = autocomplete_.remove_all_value_multi()
+            logger.info(count_after)
+            assert count_after is None
+
+        def test_single_color_autocomplete(self, driver):
+            autocomplete_ = AutoCompletePage(driver, 'https://demoqa.com/auto-complete')
+            autocomplete_.open()
+            color_ = autocomplete_.fil_input_single()
+            result_color = autocomplete_.check_single_color()
+            assert color_ == result_color
 
 

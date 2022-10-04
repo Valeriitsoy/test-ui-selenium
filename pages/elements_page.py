@@ -49,7 +49,7 @@ class CheckBoxPage(BasePage):
         self.element_is_visible(self.locators.EXPAND_ALL_BUTTON).click()
 
     def click_random_checkbox(self):
-        item_list = self.element_are_visible(self.locators.ITEM_LIST)
+        item_list = self.elements_are_visible(self.locators.ITEM_LIST)
         count = 19
         while count != 0:
             item = item_list[random.randint(1, 15)]
@@ -61,7 +61,7 @@ class CheckBoxPage(BasePage):
                 break
 
     def get_checked_checkboxes(self):
-        checked_list = self.element_are_present(self.locators.CHECKED_ITEMS)
+        checked_list = self.elements_are_present(self.locators.CHECKED_ITEMS)
         data = []
         for box in checked_list:
             title_item = box.find_element(By.XPATH, self.locators.TITLE_ITEM)
@@ -69,7 +69,7 @@ class CheckBoxPage(BasePage):
         return str(data).replace(' ', '').replace('doc', '').replace('.', '').lower()
 
     def get_output_result(self):
-        result_list = self.element_are_present(self.locators.OUTPUT_RESULT)
+        result_list = self.elements_are_present(self.locators.OUTPUT_RESULT)
         data = []
         for item in result_list:
             data.append(item.text)
@@ -120,7 +120,7 @@ class WebTablePage(BasePage):
                 return [firstname, lastname, str(age), email, str(salary), department]
 
     def check_person(self):
-        person_list = self.element_are_present(self.locators.PERSON_LIST)
+        person_list = self.elements_are_present(self.locators.PERSON_LIST)
         data = []
         for i in person_list:
             data.append(i.text.splitlines())
@@ -161,7 +161,7 @@ class WebTablePage(BasePage):
         return data
 
     def check_count_rows(self):
-        list_rows = self.element_are_present(self.locators.PERSON_LIST)
+        list_rows = self.elements_are_present(self.locators.PERSON_LIST)
         return len(list_rows)
 
 
