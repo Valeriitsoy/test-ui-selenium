@@ -1,5 +1,6 @@
 import pytest
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains as AC
@@ -81,3 +82,16 @@ class BasePage:
             self.driver.switch_to.frame(child_)
             text_ = self.element_is_present((By.CSS_SELECTOR, "p")).text
             return text_
+
+    def select_date_by_text(self, element, value):
+        select = Select(self.element_is_present(element))
+        select.select_by_visible_text(value)
+
+    def select_date_item_from_list(self, elements, value):
+        list_ = self.elements_are_present(elements)
+        for i in list_:
+            if i.text == value:
+                i.click()
+                break
+
+

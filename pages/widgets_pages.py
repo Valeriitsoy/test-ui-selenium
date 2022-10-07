@@ -5,8 +5,8 @@ from loguru import logger
 from selenium.common import TimeoutException
 from selenium.webdriver import Keys
 
-from generator.generator import generated_colors
-from locators.widgets_page_locators import AccordionPageLocators, AutoCompletePageLocators
+from generator.generator import generated_colors, generated_date
+from locators.widgets_page_locators import AccordionPageLocators, AutoCompletePageLocators, DatePickerPageLocators
 from pages.base_page import BasePage
 import pysnooper
 logger.add("debug.log", format="{time} {level} {message}")
@@ -98,3 +98,34 @@ class AutoCompletePage(BasePage):
         return color.text
 
 
+class DatePickerPage(BasePage):
+
+    locators = DatePickerPageLocators()
+
+    @pysnooper.snoop()
+    def select_date(self):
+        date = next(generated_date())
+        input_date = self.element_is_visible(self.locators.DATE_INPUT)
+        value_date_before = input_date.get_attribute('value')
+        input_date.click()
+        self.select_date_by_text(self.locators.DATE_SELECT_MONTH, date.month)
+        self.select_date_by_text(self.locators.DATE_SELECT_YEAR, date.year)
+        self.select_date_item_from_list(self.locators.DATE_SELECT_DAY_LIST, date.day)
+        value_date_after = input_date.get_attribute('value')
+        return value_date_before, value_date_after
+
+    @pysnooper.snoop()
+    def select_date_time(self):
+        date = next(generated_date())
+        input_date = self.element_is_visible(self.locators.DATE_TIME_INPUT)
+        value_date_before = input_date.get_attribute('value')
+        input_date.click()
+        self.element_is_visible(self.locators.DATE_TIME_MONTH).click()
+        self.select_date_item_from_list(self.locators.DATE_TIME_MONTH_LIST, date.month)
+        self.element_is_visible(self.locators.DATE_TIME_YEAR).click()
+        self.select_date_item_from_list(self.locators.DATE_TIME_YEAR_LIST, '2021')
+        self.select_date_item_from_list(self.locators.DATE_SELECT_DAY_LIST, date.day)
+        self.select_date_item_from_list(self.locators.DATE_TIME_TIME_LIST, date.time)
+        input_date_after = self.element_is_visible(self.locators.DATE_TIME_INPUT)
+        value_date_after = input_date_after.get_attribute('value')
+        return value_date_before, value_date_after

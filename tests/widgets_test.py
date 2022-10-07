@@ -2,7 +2,7 @@ import time
 
 from loguru import logger
 
-from pages.widgets_pages import AccordionPage, AutoCompletePage
+from pages.widgets_pages import AccordionPage, AutoCompletePage, DatePickerPage
 
 
 class TestWidgets:
@@ -52,4 +52,16 @@ class TestWidgets:
             result_color = autocomplete_.check_single_color()
             assert color_ == result_color
 
+    class TestDatePickerPage:
 
+        def test_change_date(self, driver):
+            data_picker_page = DatePickerPage(driver, 'https://demoqa.com/date-picker')
+            data_picker_page.open()
+            value_date_before, value_date_after = data_picker_page.select_date()
+            assert value_date_before != value_date_after, "The date not change"
+
+        def test_change_date_and_time(self, driver):
+            data_picker_page = DatePickerPage(driver, 'https://demoqa.com/date-picker')
+            data_picker_page.open()
+            value_date_before, value_date_after = data_picker_page.select_date_time()
+            assert value_date_before != value_date_after, "The date and time not change"
