@@ -2,7 +2,7 @@ import time
 
 from loguru import logger
 
-from pages.widgets_pages import AccordionPage, AutoCompletePage, DatePickerPage
+from pages.widgets_pages import AccordionPage, AutoCompletePage, DatePickerPage, SliderPage, ProgressBarPage
 
 
 class TestWidgets:
@@ -65,3 +65,20 @@ class TestWidgets:
             data_picker_page.open()
             value_date_before, value_date_after = data_picker_page.select_date_time()
             assert value_date_before != value_date_after, "The date and time not change"
+
+    class TestSliderPage:
+
+        def test_slider(self, driver):
+            slider = SliderPage(driver, 'https://demoqa.com/slider')
+            slider.open()
+            before_, after_ = slider.change_slider_value()
+            assert before_ != after_, "Slider value not changed"
+
+    class TestProgressBarPage:
+
+        def test_bar(self, driver):
+            bar = ProgressBarPage(driver, 'https://demoqa.com/progress-bar')
+            bar.open()
+            before_, after_ = bar.change_bar_value()
+            assert before_ != after_, "Progress bar value not changed"
+

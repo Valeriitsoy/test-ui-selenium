@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver import ActionChains as AC
+from selenium.webdriver import ActionChains as AC, ActionChains
 
 from locators.alert_win_locators import NestedFramesPageLocators
 
@@ -93,5 +93,10 @@ class BasePage:
             if i.text == value:
                 i.click()
                 break
+
+    def action_drag_and_drop_by_offset(self, element, x_, y_):
+        action = ActionChains(self.driver)
+        action.drag_and_drop_by_offset(element, x_, y_)
+        action.perform()
 
 

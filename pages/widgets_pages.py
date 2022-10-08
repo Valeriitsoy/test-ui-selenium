@@ -6,7 +6,8 @@ from selenium.common import TimeoutException
 from selenium.webdriver import Keys
 
 from generator.generator import generated_colors, generated_date
-from locators.widgets_page_locators import AccordionPageLocators, AutoCompletePageLocators, DatePickerPageLocators
+from locators.widgets_page_locators import AccordionPageLocators, AutoCompletePageLocators, DatePickerPageLocators, \
+    SliderPageLocators, ProgressBarPageLocators
 from pages.base_page import BasePage
 import pysnooper
 logger.add("debug.log", format="{time} {level} {message}")
@@ -129,3 +130,32 @@ class DatePickerPage(BasePage):
         input_date_after = self.element_is_visible(self.locators.DATE_TIME_INPUT)
         value_date_after = input_date_after.get_attribute('value')
         return value_date_before, value_date_after
+
+
+class SliderPage(BasePage):
+
+    locators = SliderPageLocators()
+
+    @pysnooper.snoop()
+    def change_slider_value(self):
+        value_before = self.element_is_visible(self.locators.SLIDER_VALUE).get_attribute('value')
+        slider_input = self.element_is_visible(self.locators.INPUT_SLIDER)
+        self.action_drag_and_drop_by_offset(slider_input, random.randint(1, 100), 0)
+        value_after = self.element_is_visible(self.locators.SLIDER_VALUE).get_attribute('value')
+        return value_before, value_after
+
+
+class ProgressBarPage(BasePage):
+
+    locators = ProgressBarPageLocators()
+
+    @pysnooper.snoop()
+    def change_bar_value(self):
+        value_before = self.element_is_present(self.locators.PROGRESS_BAR_VALUE).text
+        progress_bar_button = self.element_is_visible(self.locators.PROGRESS_BAR_BUTTON)
+        progress_bar_button.click()
+        time.sleep(random.randint(1, 4))
+        progress_bar_button.click()
+        value_after = self.element_is_present(self.locators.PROGRESS_BAR_VALUE).text
+        return value_before, value_after
+
