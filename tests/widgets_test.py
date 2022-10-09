@@ -2,7 +2,7 @@
 from loguru import logger
 
 from pages.widgets_pages import AccordionPage, AutoCompletePage, DatePickerPage, SliderPage, ProgressBarPage, TabsPage, \
-    ToolTipsPage
+    ToolTipsPage, MenuPage
 
 
 class TestWidgets:
@@ -106,3 +106,12 @@ class TestWidgets:
             assert tip_text_field == 'You hovered over the text field'
             assert tip_text_contrary == 'You hovered over the Contrary'
             assert tip_text_section == 'You hovered over the 1.10.32'
+
+    class TestMenu:
+
+        def test_menu(self, driver):
+            menu_ = MenuPage(driver, 'https://demoqa.com/menu')
+            menu_.open()
+            data = menu_.check_menu()
+            assert data == ['Main Item 1', 'Main Item 2', 'Sub Item', 'Sub Item', 'SUB SUB LIST »', 'Sub Sub Item 1',
+                            'Sub Sub Item 2', 'Main Item 3']

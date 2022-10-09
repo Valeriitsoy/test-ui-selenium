@@ -7,7 +7,7 @@ from selenium.webdriver import Keys
 
 from generator.generator import generated_colors, generated_date
 from locators.widgets_page_locators import AccordionPageLocators, AutoCompletePageLocators, DatePickerPageLocators, \
-    SliderPageLocators, ProgressBarPageLocators, TabsPageLocators, ToolTipsPageLocators
+    SliderPageLocators, ProgressBarPageLocators, TabsPageLocators, ToolTipsPageLocators, MenuPageLocators
 from pages.base_page import BasePage
 import pysnooper
 logger.add("debug.log", format="{time} {level} {message}")
@@ -216,3 +216,16 @@ class ToolTipsPage(BasePage):
         tip_text_section = self.get_text_from_tool_tips(self.locators.SECTION_LINK, self.locators.TOOL_TIP_SECTION_LINK)
         return tip_text_button, tip_text_field, tip_text_contrary, tip_text_section
 
+
+class MenuPage(BasePage):
+
+    locators = MenuPageLocators()
+
+    @pysnooper.snoop()
+    def check_menu(self):
+        menu_item_list = self.elements_are_present(self.locators.MENU_ITEM_LIST)
+        data = []
+        for i in menu_item_list:
+            self.action_move_to_element(i)
+            data.append(i.text)
+        return data
