@@ -1,4 +1,4 @@
-from pages.interactions_page import SortablePage, SelectablePage
+from pages.interactions_page import SortablePage, SelectablePage, ResizablePage
 
 
 class TestInteractions:
@@ -22,3 +22,14 @@ class TestInteractions:
             grid_ = select_.select_grid_item()
             assert len(list_) > 0, "No selected elements"
             assert len(grid_) > 0, "No selected elements"
+
+    class TestResizable:
+
+        def test_resizable(self, driver):
+            resize_ = ResizablePage(driver, 'https://demoqa.com/resizable')
+            resize_.open()
+            max_box, min_box = resize_.change_size_resizable_box()
+            max_resize, min_resize = resize_.change_size_resizable()
+            assert ('500px', '300px') == max_box
+            assert ('150px', '150px') == min_box
+            assert max_resize != min_resize
