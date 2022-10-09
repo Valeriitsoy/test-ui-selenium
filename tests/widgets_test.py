@@ -1,8 +1,7 @@
-import time
 
 from loguru import logger
 
-from pages.widgets_pages import AccordionPage, AutoCompletePage, DatePickerPage, SliderPage, ProgressBarPage
+from pages.widgets_pages import AccordionPage, AutoCompletePage, DatePickerPage, SliderPage, ProgressBarPage, TabsPage
 
 
 class TestWidgets:
@@ -82,3 +81,16 @@ class TestWidgets:
             before_, after_ = bar.change_bar_value()
             assert before_ != after_, "Progress bar value not changed"
 
+    class TestTabsPage:
+
+        def test_tabs(self, driver):
+            tabs = TabsPage(driver, 'https://demoqa.com/tabs')
+            tabs.open()
+            what_button, what_content = tabs.check_tabs('what')
+            origin_button, origin_content = tabs.check_tabs('origin')
+            use_button, use_content = tabs.check_tabs('use')
+            more_button, more_content = tabs.check_tabs('more')
+            assert what_button == 'What', what_content > 0
+            assert use_button == 'Use', use_content > 0
+            assert origin_button == 'Origin', origin_content > 0
+            assert more_button == 'More', more_content > 0
