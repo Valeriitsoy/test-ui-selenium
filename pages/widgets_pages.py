@@ -7,7 +7,7 @@ from selenium.webdriver import Keys
 
 from generator.generator import generated_colors, generated_date
 from locators.widgets_page_locators import AccordionPageLocators, AutoCompletePageLocators, DatePickerPageLocators, \
-    SliderPageLocators, ProgressBarPageLocators, TabsPageLocators
+    SliderPageLocators, ProgressBarPageLocators, TabsPageLocators, ToolTipsPageLocators
 from pages.base_page import BasePage
 import pysnooper
 logger.add("debug.log", format="{time} {level} {message}")
@@ -192,3 +192,27 @@ class TabsPage(BasePage):
         button.click()
         content = self.element_is_visible(tabs[name_tab]['content']).text
         return button.text, len(content)
+
+
+class ToolTipsPage(BasePage):
+
+    locators = ToolTipsPageLocators()
+
+    @pysnooper.snoop()
+    def get_text_from_tool_tips(self, hover_to, wait_hover):
+        element = self.element_is_present(hover_to)
+        self.action_move_to_element(element)
+        self.element_is_present(wait_hover)
+        time.sleep(1)
+        tool_tip_text = self.element_is_present(self.locators.TOOL_TIP_INNERS)
+        text_ = tool_tip_text.text
+        return text_
+
+    @pysnooper.snoop()
+    def check_tool_tips(self):
+        tip_text_button = self.get_text_from_tool_tips(self.locators.BUTTON, self.locators.TOOL_TIP_BUTTON)
+        tip_text_field = self.get_text_from_tool_tips(self.locators.INPUT, self.locators.TOOL_TIP_FIELD)
+        tip_text_contrary = self.get_text_from_tool_tips(self.locators.CONTRARY_LINK, self.locators.TOOL_TIP_CONTRARY_LINK)
+        tip_text_section = self.get_text_from_tool_tips(self.locators.SECTION_LINK, self.locators.TOOL_TIP_SECTION_LINK)
+        return tip_text_button, tip_text_field, tip_text_contrary, tip_text_section
+

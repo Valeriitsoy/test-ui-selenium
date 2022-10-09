@@ -1,7 +1,8 @@
 
 from loguru import logger
 
-from pages.widgets_pages import AccordionPage, AutoCompletePage, DatePickerPage, SliderPage, ProgressBarPage, TabsPage
+from pages.widgets_pages import AccordionPage, AutoCompletePage, DatePickerPage, SliderPage, ProgressBarPage, TabsPage, \
+    ToolTipsPage
 
 
 class TestWidgets:
@@ -94,3 +95,14 @@ class TestWidgets:
             assert use_button == 'Use', use_content > 0
             assert origin_button == 'Origin', origin_content > 0
             assert more_button == 'More', more_content > 0
+
+    class TestToolTips:
+
+        def test_tool_tips(self, driver):
+            tips_ = ToolTipsPage(driver, 'https://demoqa.com/tool-tips')
+            tips_.open()
+            tip_text_button, tip_text_field, tip_text_contrary, tip_text_section = tips_.check_tool_tips()
+            assert tip_text_button == 'You hovered over the Button'
+            assert tip_text_field == 'You hovered over the text field'
+            assert tip_text_contrary == 'You hovered over the Contrary'
+            assert tip_text_section == 'You hovered over the 1.10.32'
