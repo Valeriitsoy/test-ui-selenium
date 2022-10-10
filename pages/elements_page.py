@@ -3,6 +3,7 @@ import os
 import random
 import time
 
+import allure
 import requests
 from loguru import logger
 from selenium.common import TimeoutException
@@ -19,6 +20,7 @@ logger.add("debug.log", format="{time} {level} {message}")
 class TextBoxPage(BasePage):
     locators = TextBoxPageLocators()
 
+    @allure.step("fill_all_fields")
     def fill_all_fields(self):
         person_info = next(generated_person())
         full_name = person_info.full_name
@@ -152,6 +154,7 @@ class WebTablePage(BasePage):
     def select_count_rows(self):
         count = [5, 10, 20, 25, 50, 100]
         data = []
+        self.remove_footer()
         for i in count:
             count_row_select = self.element_is_visible(self.locators.COUNT_ROWS)
             self.go_to_element(count_row_select)
