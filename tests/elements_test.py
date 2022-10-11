@@ -54,7 +54,7 @@ class TestElements:
             output_no = radio_button.get_output_result()
             assert output_yes == 'Yes', "'Yes' have not been selected"
             assert output_impressive == 'Impressive', "'Impressive' have not been selected"
-            assert output_no == 'No', "'No' have not been selected"
+            assert output_no == 'No', "'No' have not been selected, OK"
 
     @allure.feature("WebTable")
     class TestWebTable:

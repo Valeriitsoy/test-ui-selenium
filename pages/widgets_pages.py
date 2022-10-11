@@ -1,6 +1,7 @@
 import random
 import time
 
+import allure
 from loguru import logger
 from selenium.common import TimeoutException
 from selenium.webdriver import Keys
@@ -18,6 +19,7 @@ class AccordionPage(BasePage):
     locators = AccordionPageLocators()
 
     @pysnooper.snoop()
+    @allure.step("check_accordion")
     def check_accordion(self, number):
         accordion = {
             'first': {
@@ -49,6 +51,7 @@ class AutoCompletePage(BasePage):
     locators = AutoCompletePageLocators()
 
     @pysnooper.snoop()
+    @allure.step("fill_input_multi")
     def fill_input_multi(self):
         colors_ = random.sample(next(generated_colors()).color_name, k=random.randint(2, 6))
         for color_ in colors_:
@@ -58,6 +61,7 @@ class AutoCompletePage(BasePage):
         return colors_
 
     @pysnooper.snoop()
+    @allure.step("remove_value_multi")
     def remove_value_multi(self):
         count_before = len(self.elements_are_present(self.locators.MULTI_VALUE))
         remove_button_list = self.elements_are_visible(self.locators.MULTI_VALUE_REMOVE)
@@ -68,6 +72,7 @@ class AutoCompletePage(BasePage):
         return count_before, count_after
 
     @pysnooper.snoop()
+    @allure.step("check_color")
     def check_color(self):
         color_list = self.elements_are_present(self.locators.MULTI_VALUE)
         colors_ = []
@@ -76,6 +81,7 @@ class AutoCompletePage(BasePage):
         return colors_
 
     @pysnooper.snoop()
+    @allure.step("remove_all_value_multi")
     def remove_all_value_multi(self):
         list_ = self.elements_are_visible(self.locators.MULTI_VALUE_REMOVE_ALL)
         for value in list_:
@@ -86,6 +92,7 @@ class AutoCompletePage(BasePage):
             return value_.get_attribute('value')
 
     @pysnooper.snoop()
+    @allure.step("fil_input_single")
     def fil_input_single(self):
         color = random.sample(next(generated_colors()).color_name, k=1)
         input_single = self.element_is_clickable(self.locators.SINGLE_INPUT)
@@ -94,6 +101,7 @@ class AutoCompletePage(BasePage):
         return color[0]
 
     @pysnooper.snoop()
+    @allure.step("check_single_color")
     def check_single_color(self):
         color = self.element_is_visible(self.locators.SINGLE_VALUE)
         return color.text
@@ -104,6 +112,7 @@ class DatePickerPage(BasePage):
     locators = DatePickerPageLocators()
 
     @pysnooper.snoop()
+    @allure.step("select_date")
     def select_date(self):
         date = next(generated_date())
         input_date = self.element_is_visible(self.locators.DATE_INPUT)
@@ -116,6 +125,7 @@ class DatePickerPage(BasePage):
         return value_date_before, value_date_after
 
     @pysnooper.snoop()
+    @allure.step("select_date_time")
     def select_date_time(self):
         date = next(generated_date())
         input_date = self.element_is_visible(self.locators.DATE_TIME_INPUT)
@@ -137,6 +147,7 @@ class SliderPage(BasePage):
     locators = SliderPageLocators()
 
     @pysnooper.snoop()
+    @allure.step("change_slider_value")
     def change_slider_value(self):
         value_before = self.element_is_visible(self.locators.SLIDER_VALUE).get_attribute('value')
         slider_input = self.element_is_visible(self.locators.INPUT_SLIDER)
@@ -150,6 +161,7 @@ class ProgressBarPage(BasePage):
     locators = ProgressBarPageLocators()
 
     @pysnooper.snoop()
+    @allure.step("change_bar_value")
     def change_bar_value(self):
         value_before = self.element_is_present(self.locators.PROGRESS_BAR_VALUE).text
         progress_bar_button = self.element_is_visible(self.locators.PROGRESS_BAR_BUTTON)
@@ -165,6 +177,7 @@ class TabsPage(BasePage):
     locators = TabsPageLocators()
 
     @pysnooper.snoop()
+    @allure.step("check_tabs")
     def check_tabs(self, name_tab):
         tabs = {
             'what':
@@ -199,6 +212,7 @@ class ToolTipsPage(BasePage):
     locators = ToolTipsPageLocators()
 
     @pysnooper.snoop()
+    @allure.step("get_text_from_tool_tips")
     def get_text_from_tool_tips(self, hover_to, wait_hover):
         element = self.element_is_present(hover_to)
         self.action_move_to_element(element)
@@ -209,6 +223,7 @@ class ToolTipsPage(BasePage):
         return text_
 
     @pysnooper.snoop()
+    @allure.step("check_tool_tips")
     def check_tool_tips(self):
         tip_text_button = self.get_text_from_tool_tips(self.locators.BUTTON, self.locators.TOOL_TIP_BUTTON)
         tip_text_field = self.get_text_from_tool_tips(self.locators.INPUT, self.locators.TOOL_TIP_FIELD)
@@ -222,6 +237,7 @@ class MenuPage(BasePage):
     locators = MenuPageLocators()
 
     @pysnooper.snoop()
+    @allure.step("check_menu")
     def check_menu(self):
         menu_item_list = self.elements_are_present(self.locators.MENU_ITEM_LIST)
         data = []

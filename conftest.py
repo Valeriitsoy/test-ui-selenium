@@ -7,7 +7,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 @pytest.fixture(scope='function')
-@allure.step("driver")
 def driver():
     driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.maximize_window()

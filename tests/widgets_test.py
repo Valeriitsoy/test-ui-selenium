@@ -1,14 +1,17 @@
-
+import allure
 from loguru import logger
 
 from pages.widgets_pages import AccordionPage, AutoCompletePage, DatePickerPage, SliderPage, ProgressBarPage, TabsPage, \
     ToolTipsPage, MenuPage
 
 
+@allure.suite("TestWidgets")
 class TestWidgets:
 
+    @allure.feature("AccordionPage")
     class TestAccordionPage:
 
+        @allure.title("test_accordion")
         def test_accordion(self, driver):
             accordion_ = AccordionPage(driver, 'https://demoqa.com/accordian')
             accordion_.open()
@@ -19,8 +22,10 @@ class TestWidgets:
             assert title_2 == "Where does it come from?" and len(content_2) > 0
             assert title_3 == "Why do we use it?" and len(content_3) > 0
 
+    @allure.feature("AutoCompletePage")
     class TestAutoCompletePage:
 
+        @allure.title("test_fil_multi_autocomplete")
         def test_fil_multi_autocomplete(self, driver):
             autocomplete_ = AutoCompletePage(driver, 'https://demoqa.com/auto-complete')
             autocomplete_.open()
@@ -29,6 +34,7 @@ class TestWidgets:
             logger.info([colors, colors_result])
             assert colors == colors_result
 
+        @allure.title("test_remove_value_multi")
         def test_remove_value_multi(self, driver):
             autocomplete_ = AutoCompletePage(driver, 'https://demoqa.com/auto-complete')
             autocomplete_.open()
@@ -37,6 +43,7 @@ class TestWidgets:
             logger.info([count_before, count_after])
             assert count_before > count_after
 
+        @allure.title("test_remove_all_value_multi")
         def test_remove_all_value_multi(self, driver):
             autocomplete_ = AutoCompletePage(driver, 'https://demoqa.com/auto-complete')
             autocomplete_.open()
@@ -45,6 +52,7 @@ class TestWidgets:
             logger.info(count_after)
             assert count_after is None
 
+        @allure.title("test_single_color_autocomplete")
         def test_single_color_autocomplete(self, driver):
             autocomplete_ = AutoCompletePage(driver, 'https://demoqa.com/auto-complete')
             autocomplete_.open()
@@ -52,38 +60,47 @@ class TestWidgets:
             result_color = autocomplete_.check_single_color()
             assert color_ == result_color
 
+    @allure.feature("DatePickerPage")
     class TestDatePickerPage:
 
+        @allure.title("test_change_date")
         def test_change_date(self, driver):
             data_picker_page = DatePickerPage(driver, 'https://demoqa.com/date-picker')
             data_picker_page.open()
             value_date_before, value_date_after = data_picker_page.select_date()
             assert value_date_before != value_date_after, "The date not change"
 
+        @allure.title("test_change_date_and_time")
         def test_change_date_and_time(self, driver):
             data_picker_page = DatePickerPage(driver, 'https://demoqa.com/date-picker')
             data_picker_page.open()
             value_date_before, value_date_after = data_picker_page.select_date_time()
             assert value_date_before != value_date_after, "The date and time not change"
 
+    @allure.feature("SliderPage")
     class TestSliderPage:
 
+        @allure.title("test_slider")
         def test_slider(self, driver):
             slider = SliderPage(driver, 'https://demoqa.com/slider')
             slider.open()
             before_, after_ = slider.change_slider_value()
             assert before_ != after_, "Slider value not changed"
 
+    @allure.feature("ProgressBarPage")
     class TestProgressBarPage:
 
+        @allure.title("test_bar")
         def test_bar(self, driver):
             bar = ProgressBarPage(driver, 'https://demoqa.com/progress-bar')
             bar.open()
             before_, after_ = bar.change_bar_value()
             assert before_ != after_, "Progress bar value not changed"
 
+    @allure.feature("TabsPage")
     class TestTabsPage:
 
+        @allure.title("test_tabs")
         def test_tabs(self, driver):
             tabs = TabsPage(driver, 'https://demoqa.com/tabs')
             tabs.open()
@@ -96,8 +113,10 @@ class TestWidgets:
             assert origin_button == 'Origin', origin_content > 0
             assert more_button == 'More', more_content > 0
 
+    @allure.feature("ToolTips")
     class TestToolTips:
 
+        @allure.title("test_tool_tips")
         def test_tool_tips(self, driver):
             tips_ = ToolTipsPage(driver, 'https://demoqa.com/tool-tips')
             tips_.open()
@@ -107,8 +126,10 @@ class TestWidgets:
             assert tip_text_contrary == 'You hovered over the Contrary'
             assert tip_text_section == 'You hovered over the 1.10.32'
 
+    @allure.feature("Menu")
     class TestMenu:
 
+        @allure.title("test_menu")
         def test_menu(self, driver):
             menu_ = MenuPage(driver, 'https://demoqa.com/menu')
             menu_.open()

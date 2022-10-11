@@ -35,6 +35,7 @@ class TextBoxPage(BasePage):
         self.element_is_visible(self.locators.SUBMIT).click()
         return full_name, email, current_address, permanent_address
 
+    @allure.step("check_filled_form")
     def check_filled_form(self):
         full_name = self.element_is_visible(self.locators.CREATED_FULL_NAME).text.split(':')[1]
         email = self.element_is_visible(self.locators.CREATED_EMAIL).text.split(':')[1]
@@ -47,9 +48,11 @@ class CheckBoxPage(BasePage):
 
     locators = CheckBoxPageLocators()
 
+    @allure.step("open_full_list")
     def open_full_list(self):
         self.element_is_visible(self.locators.EXPAND_ALL_BUTTON).click()
 
+    @allure.step("click_random_checkbox")
     def click_random_checkbox(self):
         item_list = self.elements_are_visible(self.locators.ITEM_LIST)
         count = 19
@@ -62,6 +65,7 @@ class CheckBoxPage(BasePage):
             else:
                 break
 
+    @allure.step("get_checked_checkboxes")
     def get_checked_checkboxes(self):
         checked_list = self.elements_are_present(self.locators.CHECKED_ITEMS)
         data = []
@@ -70,6 +74,7 @@ class CheckBoxPage(BasePage):
             data.append(title_item.text)
         return str(data).replace(' ', '').replace('doc', '').replace('.', '').lower()
 
+    @allure.step("get_output_result")
     def get_output_result(self):
         result_list = self.elements_are_present(self.locators.OUTPUT_RESULT)
         data = []
@@ -82,6 +87,7 @@ class RadioButtonPage(BasePage):
 
     locators = RadioButtonPageLocators()
 
+    @allure.step("click_on_the_radio_button")
     def click_on_the_radio_button(self, choice):
         choices = {
             'yes': self.locators.YES_BUTTON,
@@ -91,6 +97,7 @@ class RadioButtonPage(BasePage):
 
         self.element_is_visible(choices[choice]).click()
 
+    @allure.step("get_output_result")
     def get_output_result(self):
         return self.element_is_present(self.locators.OUT_RESULT).text
 
@@ -99,6 +106,7 @@ class WebTablePage(BasePage):
 
     locators = WebTablePageLocators()
 
+    @allure.step("add_new_person")
     def add_new_person(self):
         count = 1
         while True:
@@ -121,6 +129,7 @@ class WebTablePage(BasePage):
             if count == 0:
                 return [firstname, lastname, str(age), email, str(salary), department]
 
+    @allure.step("check_person")
     def check_person(self):
         person_list = self.elements_are_present(self.locators.PERSON_LIST)
         data = []
@@ -128,14 +137,17 @@ class WebTablePage(BasePage):
             data.append(i.text.splitlines())
         return data
 
+    @allure.step("search_person")
     def search_person(self, key):
         self.element_is_visible(self.locators.SEARCH_FIL).send_keys(key)
 
+    @allure.step("check_search_person")
     def check_search_person(self):
         delete_button = self.element_is_present(self.locators.DELETE_BUTTON)
         row = delete_button.find_element(By.XPATH, self.locators.ROW_PARENT)
         return row.text.splitlines()
 
+    @allure.step("update_person_info")
     def update_person_info(self):
         person_info = next(generated_person())
         age = person_info.age
@@ -145,12 +157,15 @@ class WebTablePage(BasePage):
         self.element_is_visible(self.locators.SUBMIT).click()
         return str(age)
 
+    @allure.step("delete_person")
     def delete_person(self):
         self.element_is_visible(self.locators.DELETE_BUTTON).click()
 
+    @allure.step("check_deleted")
     def check_deleted(self):
         return self.element_is_visible(self.locators.NO_ROWS_FOUND).text
 
+    @allure.step("select_count_rows")
     def select_count_rows(self):
         count = [5, 10, 20, 25, 50, 100]
         data = []
@@ -163,6 +178,7 @@ class WebTablePage(BasePage):
             data.append(self.check_count_rows())
         return data
 
+    @allure.step("check_count_rows")
     def check_count_rows(self):
         list_rows = self.elements_are_present(self.locators.PERSON_LIST)
         return len(list_rows)
@@ -171,17 +187,21 @@ class WebTablePage(BasePage):
 class ButtonsPage(BasePage):
     locators = ButtonsLocators()
 
+    @allure.step("check_click_buttons")
     def check_click_buttons(self, element):
         return self.element_is_present(element).text
 
+    @allure.step("double_click")
     def double_click(self):
         self.action_double_click(self.element_is_visible(self.locators.DOUBLE_CLICK_ME))
         return self.check_click_buttons(self.locators.CHECK_DOUBLE_CLICK_ME)
 
+    @allure.step("right_click")
     def right_click(self):
         self.action_right_click(self.element_is_visible(self.locators.RIGHT_CLICK_ME))
         return self.check_click_buttons(self.locators.CHECK_RIGHT_CLICK_ME)
 
+    @allure.step("simple_click")
     def simple_click(self):
         self.element_is_visible(self.locators.CLICK_ME).click()
         return self.check_click_buttons(self.locators.CHECK_CLICK_ME)
@@ -190,6 +210,7 @@ class ButtonsPage(BasePage):
 class LinksPage(BasePage):
     locators = LinksLocators()
 
+    @allure.step("check_simple_link")
     def check_simple_link(self):
         simple_link = self.element_is_visible(self.locators.SIMPLE_LINk)
         href_link = simple_link.get_attribute('href')
@@ -201,6 +222,7 @@ class LinksPage(BasePage):
         else:
             return href_link, request.status_code
 
+    @allure.step("check_dynamic_link")
     def check_dynamic_link(self):
         dynamic_link = self.element_is_visible(self.locators.DYNAMIC_LINK)
         href_link = dynamic_link.get_attribute('href')
@@ -212,6 +234,7 @@ class LinksPage(BasePage):
         else:
             return href_link, request.status_code
 
+    @allure.step("check_api_call_link")
     def check_api_call_link(self, url):
         r = requests.get(url)
         dict_codes = {
@@ -237,6 +260,7 @@ class UploadDownloadFilePage(BasePage):
 
     locators = UploadDownloadFilePageLocators()
 
+    @allure.step("upload_file")
     def upload_file(self):
         file_name, path = generated_file()
         self.element_is_present(self.locators.UPLOAD_FILE).send_keys(path)
@@ -249,6 +273,7 @@ class UploadDownloadFilePage(BasePage):
         logger.info(uploaded_name_file)
         return upload_name_file, uploaded_name_file
 
+    @allure.step("download_file")
     def download_file(self):
         link = self.element_is_present(self.locators.DOWNLOAD_FILE).get_attribute('href')
         b_link = base64.b64decode(link)
@@ -266,6 +291,7 @@ class DynamicProperties(BasePage):
 
     locators = DynamicPropertiesLocators()
 
+    @allure.step("check_enable_button")
     def check_enable_button(self):
         try:
             self.element_is_clickable(self.locators.ENABLE_BUTTON)
@@ -273,6 +299,7 @@ class DynamicProperties(BasePage):
             return False
         return True
 
+    @allure.step("check_change_color_button")
     def check_change_color_button(self):
         color_button = self.element_is_present(self.locators.COLOR_CHANGE_BUTTON)
         color_button_before = color_button.value_of_css_property('color')
@@ -280,6 +307,7 @@ class DynamicProperties(BasePage):
         color_button_after = color_button.value_of_css_property('color')
         return color_button_before, color_button_after
 
+    @allure.step("check_visible_after_button")
     def check_visible_after_button(self):
         try:
             self.element_is_visible(self.locators.VISIBLE_AFTER_FIVE_S_BUTTON)

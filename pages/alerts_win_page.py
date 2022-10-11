@@ -1,6 +1,7 @@
 import random
 import time
 
+import allure
 from loguru import logger
 import pysnooper
 from locators.alert_win_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators, \
@@ -14,6 +15,7 @@ class BrowserWindowsPage(BasePage):
 
     locators = BrowserWindowsPageLocators()
 
+    @allure.step("check_opened_new")
     def check_opened_new(self, value):
         if value == 'tab':
             self.element_is_visible(self.locators.NEW_TAB_BUTTON).click()
@@ -29,7 +31,7 @@ class BrowserWindowsPage(BasePage):
             logger.info(text_)
             return text_
 
-    @pysnooper.snoop()
+    @allure.step("check_opened_new_win_message")
     def check_opened_new_win_message(self):
         self.element_is_visible(self.locators.NEW_WINDOW_MESSAGE_BUTTON).click()
         self.driver.switch_to.new_window()
@@ -42,18 +44,19 @@ class AlertsPage(BasePage):
 
     locators = AlertsPageLocators()
 
-    @pysnooper.snoop()
+    @allure.step("check_see_alert")
     def check_see_alert(self):
         self.element_is_visible(self.locators.SEE_ALERT_BUTTON).click()
         return self.get_text_from_alert()
 
-    @pysnooper.snoop()
+    @allure.step("check_five_seconds_alert")
     def check_five_seconds_alert(self):
         self.element_is_visible(self.locators.ALERT_FIVE_SECONDS_BUTTON).click()
         time.sleep(5)
         return self.get_text_from_alert()
 
     @pysnooper.snoop()
+    @allure.step("check_confirm_alert")
     def check_confirm_alert(self):
         self.element_is_visible(self.locators.CONFIRM_BOX_BUTTON).click()
         time.sleep(2)
@@ -61,6 +64,7 @@ class AlertsPage(BasePage):
         return self.element_is_present(self.locators.CONFIRM_RESULT_TEXT).text
 
     @pysnooper.snoop()
+    @allure.step("check_dismiss_alert")
     def check_dismiss_alert(self):
         self.element_is_visible(self.locators.CONFIRM_BOX_BUTTON).click()
         time.sleep(2)
@@ -68,6 +72,7 @@ class AlertsPage(BasePage):
         return self.element_is_present(self.locators.CONFIRM_RESULT_TEXT).text
 
     @pysnooper.snoop()
+    @allure.step("check_prompt_alert")
     def check_prompt_alert(self):
         text_ = f'TEST {random.randint(1, 999)}'
         self.element_is_visible(self.locators.PROMPT_BOX_BUTTON).click()
@@ -82,6 +87,7 @@ class FramesPage(BasePage):
     locators = FramesPageLocators()
 
     @pysnooper.snoop()
+    @allure.step("check_frame")
     def check_frame(self, frame_number):
         if frame_number == 'frame1':
             frame = self.element_is_present(self.locators.FRAME_ONE)
@@ -104,6 +110,7 @@ class FramesPage(BasePage):
 class NestedFramesPage(BasePage):
 
     @pysnooper.snoop()
+    @allure.step("check_nested_frame")
     def check_nested_frame(self):
 
         p_text = self.get_frame_text('parent')
@@ -117,6 +124,7 @@ class ModalDialogsPage(BasePage):
     locators = ModalDialogsPageLocators()
 
     @pysnooper.snoop()
+    @allure.step("check_modal_dialog")
     def check_modal_dialog(self):
         self.element_is_visible(self.locators.SMALL_MODAL_BUTTON).click()
         title_small = self.element_is_visible(self.locators.TITLE_SMALL_MODAL).text
